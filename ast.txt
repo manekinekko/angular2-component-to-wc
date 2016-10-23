@@ -1,0 +1,499 @@
+ SourceFile [import { Component } from '@angular/core';
+import { PinterestService } from './pinterest.service';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+
+  pins = [];
+  boards = [];
+  isClicked = false;
+  isSearching = false;
+  distance = 0;
+  boardname;
+  session;
+
+  constructor(
+    private service: PinterestService
+  ) {
+    this.session = this.service.session;
+  }
+
+  setMinDistance(event) {
+    this.distance = +(event.target.value);
+    this.service.minDistance = this.distance;
+  }
+
+  setCurrentBoard(event) {
+    this.boardname = event.target.value;
+  }
+
+  login() {
+    this.service.login().subscribe( session => {
+      this.session = this.service.session;
+    })
+  }
+  logout() {
+    this.service.logout();
+    this.session = null;
+  }
+  getBoards() {
+    this.isClicked = true;
+    this.service.boards().subscribe(boards => {
+      this.boards = boards;
+      this.isClicked = false;
+    });
+  }
+  getPins() {
+    this.isClicked = true;
+    this.isSearching = false;
+    this.service.pins(this.boardname).subscribe(pins => {
+      this.pins = pins;
+      this.isClicked = false;
+      this.isSearching = true;
+    });
+  }
+}
+]  
+---- SyntaxList   
+-------- ImportDeclaration   
+------------ ImportKeyword   
+------------ ImportClause   
+---------------- NamedImports   
+-------------------- FirstPunctuation   
+-------------------- SyntaxList   
+------------------------ ImportSpecifier  [Component] 
+---------------------------- Identifier [Component]  
+-------------------- CloseBraceToken   
+------------ FromKeyword   
+------------ StringLiteral [@angular/core]  
+------------ SemicolonToken   
+-------- ImportDeclaration   
+------------ ImportKeyword   
+------------ ImportClause   
+---------------- NamedImports   
+-------------------- FirstPunctuation   
+-------------------- SyntaxList   
+------------------------ ImportSpecifier  [PinterestService] 
+---------------------------- Identifier [PinterestService]  
+-------------------- CloseBraceToken   
+------------ FromKeyword   
+------------ StringLiteral [./pinterest.service]  
+------------ SemicolonToken   
+-------- ClassDeclaration  [AppComponent] 
+------------ SyntaxList   
+---------------- Decorator   [undefined]
+-------------------- AtToken   
+-------------------- CallExpression   [Component]
+------------------------ Identifier [Component]  
+------------------------ OpenParenToken   
+------------------------ SyntaxList   
+---------------------------- ObjectLiteralExpression   
+-------------------------------- FirstPunctuation   
+-------------------------------- SyntaxList   
+------------------------------------ PropertyAssignment  [selector] 
+---------------------------------------- Identifier [selector]  
+---------------------------------------- ColonToken   
+---------------------------------------- StringLiteral [app-root]  
+------------------------------------ CommaToken   
+------------------------------------ PropertyAssignment  [templateUrl] 
+---------------------------------------- Identifier [templateUrl]  
+---------------------------------------- ColonToken   
+---------------------------------------- StringLiteral [./app.component.html]  
+------------------------------------ CommaToken   
+------------------------------------ PropertyAssignment  [styleUrls] 
+---------------------------------------- Identifier [styleUrls]  
+---------------------------------------- ColonToken   
+---------------------------------------- ArrayLiteralExpression   
+-------------------------------------------- OpenBracketToken   
+-------------------------------------------- SyntaxList   
+------------------------------------------------ StringLiteral [./app.component.css]  
+-------------------------------------------- CloseBracketToken   
+-------------------------------- CloseBraceToken   
+------------------------ CloseParenToken   
+------------ SyntaxList   
+---------------- ExportKeyword   
+------------ ClassKeyword   
+------------ Identifier [AppComponent]  
+------------ FirstPunctuation   
+------------ SyntaxList   
+---------------- PropertyDeclaration  [pins] 
+-------------------- Identifier [pins]  
+-------------------- FirstAssignment   
+-------------------- ArrayLiteralExpression   
+------------------------ OpenBracketToken   
+------------------------ SyntaxList   
+------------------------ CloseBracketToken   
+-------------------- SemicolonToken   
+---------------- PropertyDeclaration  [boards] 
+-------------------- Identifier [boards]  
+-------------------- FirstAssignment   
+-------------------- ArrayLiteralExpression   
+------------------------ OpenBracketToken   
+------------------------ SyntaxList   
+------------------------ CloseBracketToken   
+-------------------- SemicolonToken   
+---------------- PropertyDeclaration  [isClicked] 
+-------------------- Identifier [isClicked]  
+-------------------- FirstAssignment   
+-------------------- FalseKeyword   
+-------------------- SemicolonToken   
+---------------- PropertyDeclaration  [isSearching] 
+-------------------- Identifier [isSearching]  
+-------------------- FirstAssignment   
+-------------------- FalseKeyword   
+-------------------- SemicolonToken   
+---------------- PropertyDeclaration  [distance] 
+-------------------- Identifier [distance]  
+-------------------- FirstAssignment   
+-------------------- FirstLiteralToken [0]  
+-------------------- SemicolonToken   
+---------------- PropertyDeclaration  [boardname] 
+-------------------- Identifier [boardname]  
+-------------------- SemicolonToken   
+---------------- PropertyDeclaration  [session] 
+-------------------- Identifier [session]  
+-------------------- SemicolonToken   
+---------------- Constructor   
+-------------------- ConstructorKeyword   
+-------------------- OpenParenToken   
+-------------------- SyntaxList   
+------------------------ Parameter  [service] 
+---------------------------- SyntaxList   
+-------------------------------- PrivateKeyword   
+---------------------------- Identifier [service]  
+---------------------------- ColonToken   
+---------------------------- TypeReference   
+-------------------------------- Identifier [PinterestService]  
+-------------------- CloseParenToken   
+-------------------- Block   
+------------------------ FirstPunctuation   
+------------------------ SyntaxList   
+---------------------------- ExpressionStatement   [undefined]
+-------------------------------- BinaryExpression   
+------------------------------------ PropertyAccessExpression  [session] [undefined]
+---------------------------------------- ThisKeyword   
+---------------------------------------- DotToken   
+---------------------------------------- Identifier [session]  
+------------------------------------ FirstAssignment   
+------------------------------------ PropertyAccessExpression  [session] [undefined]
+---------------------------------------- PropertyAccessExpression  [service] [undefined]
+-------------------------------------------- ThisKeyword   
+-------------------------------------------- DotToken   
+-------------------------------------------- Identifier [service]  
+---------------------------------------- DotToken   
+---------------------------------------- Identifier [session]  
+-------------------------------- SemicolonToken   
+------------------------ CloseBraceToken   
+---------------- MethodDeclaration  [setMinDistance] 
+-------------------- Identifier [setMinDistance]  
+-------------------- OpenParenToken   
+-------------------- SyntaxList   
+------------------------ Parameter  [event] 
+---------------------------- Identifier [event]  
+-------------------- CloseParenToken   
+-------------------- Block   
+------------------------ FirstPunctuation   
+------------------------ SyntaxList   
+---------------------------- ExpressionStatement   [undefined]
+-------------------------------- BinaryExpression   
+------------------------------------ PropertyAccessExpression  [distance] [undefined]
+---------------------------------------- ThisKeyword   
+---------------------------------------- DotToken   
+---------------------------------------- Identifier [distance]  
+------------------------------------ FirstAssignment   
+------------------------------------ PrefixUnaryExpression   
+---------------------------------------- PlusToken   
+---------------------------------------- ParenthesizedExpression   [undefined]
+-------------------------------------------- OpenParenToken   
+-------------------------------------------- PropertyAccessExpression  [value] [undefined]
+------------------------------------------------ PropertyAccessExpression  [target] [event]
+---------------------------------------------------- Identifier [event]  
+---------------------------------------------------- DotToken   
+---------------------------------------------------- Identifier [target]  
+------------------------------------------------ DotToken   
+------------------------------------------------ Identifier [value]  
+-------------------------------------------- CloseParenToken   
+-------------------------------- SemicolonToken   
+---------------------------- ExpressionStatement   [undefined]
+-------------------------------- BinaryExpression   
+------------------------------------ PropertyAccessExpression  [minDistance] [undefined]
+---------------------------------------- PropertyAccessExpression  [service] [undefined]
+-------------------------------------------- ThisKeyword   
+-------------------------------------------- DotToken   
+-------------------------------------------- Identifier [service]  
+---------------------------------------- DotToken   
+---------------------------------------- Identifier [minDistance]  
+------------------------------------ FirstAssignment   
+------------------------------------ PropertyAccessExpression  [distance] [undefined]
+---------------------------------------- ThisKeyword   
+---------------------------------------- DotToken   
+---------------------------------------- Identifier [distance]  
+-------------------------------- SemicolonToken   
+------------------------ CloseBraceToken   
+---------------- MethodDeclaration  [setCurrentBoard] 
+-------------------- Identifier [setCurrentBoard]  
+-------------------- OpenParenToken   
+-------------------- SyntaxList   
+------------------------ Parameter  [event] 
+---------------------------- Identifier [event]  
+-------------------- CloseParenToken   
+-------------------- Block   
+------------------------ FirstPunctuation   
+------------------------ SyntaxList   
+---------------------------- ExpressionStatement   [undefined]
+-------------------------------- BinaryExpression   
+------------------------------------ PropertyAccessExpression  [boardname] [undefined]
+---------------------------------------- ThisKeyword   
+---------------------------------------- DotToken   
+---------------------------------------- Identifier [boardname]  
+------------------------------------ FirstAssignment   
+------------------------------------ PropertyAccessExpression  [value] [undefined]
+---------------------------------------- PropertyAccessExpression  [target] [event]
+-------------------------------------------- Identifier [event]  
+-------------------------------------------- DotToken   
+-------------------------------------------- Identifier [target]  
+---------------------------------------- DotToken   
+---------------------------------------- Identifier [value]  
+-------------------------------- SemicolonToken   
+------------------------ CloseBraceToken   
+---------------- MethodDeclaration  [login] 
+-------------------- Identifier [login]  
+-------------------- OpenParenToken   
+-------------------- SyntaxList   
+-------------------- CloseParenToken   
+-------------------- Block   
+------------------------ FirstPunctuation   
+------------------------ SyntaxList   
+---------------------------- ExpressionStatement   [undefined]
+-------------------------------- CallExpression   [undefined]
+------------------------------------ PropertyAccessExpression  [subscribe] [undefined]
+---------------------------------------- CallExpression   [undefined]
+-------------------------------------------- PropertyAccessExpression  [login] [undefined]
+------------------------------------------------ PropertyAccessExpression  [service] [undefined]
+---------------------------------------------------- ThisKeyword   
+---------------------------------------------------- DotToken   
+---------------------------------------------------- Identifier [service]  
+------------------------------------------------ DotToken   
+------------------------------------------------ Identifier [login]  
+-------------------------------------------- OpenParenToken   
+-------------------------------------------- SyntaxList   
+-------------------------------------------- CloseParenToken   
+---------------------------------------- DotToken   
+---------------------------------------- Identifier [subscribe]  
+------------------------------------ OpenParenToken   
+------------------------------------ SyntaxList   
+---------------------------------------- ArrowFunction   
+-------------------------------------------- SyntaxList   
+------------------------------------------------ Parameter  [session] 
+---------------------------------------------------- Identifier [session]  
+-------------------------------------------- EqualsGreaterThanToken   
+-------------------------------------------- Block   
+------------------------------------------------ FirstPunctuation   
+------------------------------------------------ SyntaxList   
+---------------------------------------------------- ExpressionStatement   [undefined]
+-------------------------------------------------------- BinaryExpression   
+------------------------------------------------------------ PropertyAccessExpression  [session] [undefined]
+---------------------------------------------------------------- ThisKeyword   
+---------------------------------------------------------------- DotToken   
+---------------------------------------------------------------- Identifier [session]  
+------------------------------------------------------------ FirstAssignment   
+------------------------------------------------------------ PropertyAccessExpression  [session] [undefined]
+---------------------------------------------------------------- PropertyAccessExpression  [service] [undefined]
+-------------------------------------------------------------------- ThisKeyword   
+-------------------------------------------------------------------- DotToken   
+-------------------------------------------------------------------- Identifier [service]  
+---------------------------------------------------------------- DotToken   
+---------------------------------------------------------------- Identifier [session]  
+-------------------------------------------------------- SemicolonToken   
+------------------------------------------------ CloseBraceToken   
+------------------------------------ CloseParenToken   
+------------------------ CloseBraceToken   
+---------------- MethodDeclaration  [logout] 
+-------------------- Identifier [logout]  
+-------------------- OpenParenToken   
+-------------------- SyntaxList   
+-------------------- CloseParenToken   
+-------------------- Block   
+------------------------ FirstPunctuation   
+------------------------ SyntaxList   
+---------------------------- ExpressionStatement   [undefined]
+-------------------------------- CallExpression   [undefined]
+------------------------------------ PropertyAccessExpression  [logout] [undefined]
+---------------------------------------- PropertyAccessExpression  [service] [undefined]
+-------------------------------------------- ThisKeyword   
+-------------------------------------------- DotToken   
+-------------------------------------------- Identifier [service]  
+---------------------------------------- DotToken   
+---------------------------------------- Identifier [logout]  
+------------------------------------ OpenParenToken   
+------------------------------------ SyntaxList   
+------------------------------------ CloseParenToken   
+-------------------------------- SemicolonToken   
+---------------------------- ExpressionStatement   [undefined]
+-------------------------------- BinaryExpression   
+------------------------------------ PropertyAccessExpression  [session] [undefined]
+---------------------------------------- ThisKeyword   
+---------------------------------------- DotToken   
+---------------------------------------- Identifier [session]  
+------------------------------------ FirstAssignment   
+------------------------------------ NullKeyword   
+-------------------------------- SemicolonToken   
+------------------------ CloseBraceToken   
+---------------- MethodDeclaration  [getBoards] 
+-------------------- Identifier [getBoards]  
+-------------------- OpenParenToken   
+-------------------- SyntaxList   
+-------------------- CloseParenToken   
+-------------------- Block   
+------------------------ FirstPunctuation   
+------------------------ SyntaxList   
+---------------------------- ExpressionStatement   [undefined]
+-------------------------------- BinaryExpression   
+------------------------------------ PropertyAccessExpression  [isClicked] [undefined]
+---------------------------------------- ThisKeyword   
+---------------------------------------- DotToken   
+---------------------------------------- Identifier [isClicked]  
+------------------------------------ FirstAssignment   
+------------------------------------ TrueKeyword   
+-------------------------------- SemicolonToken   
+---------------------------- ExpressionStatement   [undefined]
+-------------------------------- CallExpression   [undefined]
+------------------------------------ PropertyAccessExpression  [subscribe] [undefined]
+---------------------------------------- CallExpression   [undefined]
+-------------------------------------------- PropertyAccessExpression  [boards] [undefined]
+------------------------------------------------ PropertyAccessExpression  [service] [undefined]
+---------------------------------------------------- ThisKeyword   
+---------------------------------------------------- DotToken   
+---------------------------------------------------- Identifier [service]  
+------------------------------------------------ DotToken   
+------------------------------------------------ Identifier [boards]  
+-------------------------------------------- OpenParenToken   
+-------------------------------------------- SyntaxList   
+-------------------------------------------- CloseParenToken   
+---------------------------------------- DotToken   
+---------------------------------------- Identifier [subscribe]  
+------------------------------------ OpenParenToken   
+------------------------------------ SyntaxList   
+---------------------------------------- ArrowFunction   
+-------------------------------------------- SyntaxList   
+------------------------------------------------ Parameter  [boards] 
+---------------------------------------------------- Identifier [boards]  
+-------------------------------------------- EqualsGreaterThanToken   
+-------------------------------------------- Block   
+------------------------------------------------ FirstPunctuation   
+------------------------------------------------ SyntaxList   
+---------------------------------------------------- ExpressionStatement   [undefined]
+-------------------------------------------------------- BinaryExpression   
+------------------------------------------------------------ PropertyAccessExpression  [boards] [undefined]
+---------------------------------------------------------------- ThisKeyword   
+---------------------------------------------------------------- DotToken   
+---------------------------------------------------------------- Identifier [boards]  
+------------------------------------------------------------ FirstAssignment   
+------------------------------------------------------------ Identifier [boards]  
+-------------------------------------------------------- SemicolonToken   
+---------------------------------------------------- ExpressionStatement   [undefined]
+-------------------------------------------------------- BinaryExpression   
+------------------------------------------------------------ PropertyAccessExpression  [isClicked] [undefined]
+---------------------------------------------------------------- ThisKeyword   
+---------------------------------------------------------------- DotToken   
+---------------------------------------------------------------- Identifier [isClicked]  
+------------------------------------------------------------ FirstAssignment   
+------------------------------------------------------------ FalseKeyword   
+-------------------------------------------------------- SemicolonToken   
+------------------------------------------------ CloseBraceToken   
+------------------------------------ CloseParenToken   
+-------------------------------- SemicolonToken   
+------------------------ CloseBraceToken   
+---------------- MethodDeclaration  [getPins] 
+-------------------- Identifier [getPins]  
+-------------------- OpenParenToken   
+-------------------- SyntaxList   
+-------------------- CloseParenToken   
+-------------------- Block   
+------------------------ FirstPunctuation   
+------------------------ SyntaxList   
+---------------------------- ExpressionStatement   [undefined]
+-------------------------------- BinaryExpression   
+------------------------------------ PropertyAccessExpression  [isClicked] [undefined]
+---------------------------------------- ThisKeyword   
+---------------------------------------- DotToken   
+---------------------------------------- Identifier [isClicked]  
+------------------------------------ FirstAssignment   
+------------------------------------ TrueKeyword   
+-------------------------------- SemicolonToken   
+---------------------------- ExpressionStatement   [undefined]
+-------------------------------- BinaryExpression   
+------------------------------------ PropertyAccessExpression  [isSearching] [undefined]
+---------------------------------------- ThisKeyword   
+---------------------------------------- DotToken   
+---------------------------------------- Identifier [isSearching]  
+------------------------------------ FirstAssignment   
+------------------------------------ FalseKeyword   
+-------------------------------- SemicolonToken   
+---------------------------- ExpressionStatement   [undefined]
+-------------------------------- CallExpression   [undefined]
+------------------------------------ PropertyAccessExpression  [subscribe] [undefined]
+---------------------------------------- CallExpression   [undefined]
+-------------------------------------------- PropertyAccessExpression  [pins] [undefined]
+------------------------------------------------ PropertyAccessExpression  [service] [undefined]
+---------------------------------------------------- ThisKeyword   
+---------------------------------------------------- DotToken   
+---------------------------------------------------- Identifier [service]  
+------------------------------------------------ DotToken   
+------------------------------------------------ Identifier [pins]  
+-------------------------------------------- OpenParenToken   
+-------------------------------------------- SyntaxList   
+------------------------------------------------ PropertyAccessExpression  [boardname] [undefined]
+---------------------------------------------------- ThisKeyword   
+---------------------------------------------------- DotToken   
+---------------------------------------------------- Identifier [boardname]  
+-------------------------------------------- CloseParenToken   
+---------------------------------------- DotToken   
+---------------------------------------- Identifier [subscribe]  
+------------------------------------ OpenParenToken   
+------------------------------------ SyntaxList   
+---------------------------------------- ArrowFunction   
+-------------------------------------------- SyntaxList   
+------------------------------------------------ Parameter  [pins] 
+---------------------------------------------------- Identifier [pins]  
+-------------------------------------------- EqualsGreaterThanToken   
+-------------------------------------------- Block   
+------------------------------------------------ FirstPunctuation   
+------------------------------------------------ SyntaxList   
+---------------------------------------------------- ExpressionStatement   [undefined]
+-------------------------------------------------------- BinaryExpression   
+------------------------------------------------------------ PropertyAccessExpression  [pins] [undefined]
+---------------------------------------------------------------- ThisKeyword   
+---------------------------------------------------------------- DotToken   
+---------------------------------------------------------------- Identifier [pins]  
+------------------------------------------------------------ FirstAssignment   
+------------------------------------------------------------ Identifier [pins]  
+-------------------------------------------------------- SemicolonToken   
+---------------------------------------------------- ExpressionStatement   [undefined]
+-------------------------------------------------------- BinaryExpression   
+------------------------------------------------------------ PropertyAccessExpression  [isClicked] [undefined]
+---------------------------------------------------------------- ThisKeyword   
+---------------------------------------------------------------- DotToken   
+---------------------------------------------------------------- Identifier [isClicked]  
+------------------------------------------------------------ FirstAssignment   
+------------------------------------------------------------ FalseKeyword   
+-------------------------------------------------------- SemicolonToken   
+---------------------------------------------------- ExpressionStatement   [undefined]
+-------------------------------------------------------- BinaryExpression   
+------------------------------------------------------------ PropertyAccessExpression  [isSearching] [undefined]
+---------------------------------------------------------------- ThisKeyword   
+---------------------------------------------------------------- DotToken   
+---------------------------------------------------------------- Identifier [isSearching]  
+------------------------------------------------------------ FirstAssignment   
+------------------------------------------------------------ TrueKeyword   
+-------------------------------------------------------- SemicolonToken   
+------------------------------------------------ CloseBraceToken   
+------------------------------------ CloseParenToken   
+-------------------------------- SemicolonToken   
+------------------------ CloseBraceToken   
+------------ CloseBraceToken   
+---- EndOfFileToken   
