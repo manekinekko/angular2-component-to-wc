@@ -10,7 +10,7 @@ var d = function (node) {
     console.log(util.inspect(node, { showHidden: true, depth: 10 }));
 };
 var code = [];
-var depth = 0;
+var indentation = 0;
 function syntaxKindToName(kind) {
     return ts.SyntaxKind[kind];
 }
@@ -23,11 +23,19 @@ function printAllChildren(node, depth) {
     depth++;
     node.getChildren().forEach(function (c) { return printAllChildren(c, depth); });
 }
+var patchClassOpenBlock = false;
+var className = '';
+var isConstructor = false;
 function recognize(node) {
     switch (syntaxKindToName(node.kind)) {
         case 'FirstLiteralToken':
         case 'Identifier':
             gen(node.text);
+            if (patchClassOpenBlock) {
+                gen(' extends HTMLElement {');
+                className = node.text;
+                patchClassOpenBlock = false;
+            }
             break;
         case 'StringLiteral':
             gen('\'');
@@ -49,12 +57,14 @@ function recognize(node) {
         case 'ClassKeyword':
             gen('class');
             gen(' ');
+            patchClassOpenBlock = true;
             break;
         case 'ThisKeyword':
             gen('this');
             break;
         case 'ConstructorKeyword':
             gen('constructor');
+            isConstructor = true;
             break;
         case 'FalseKeyword':
             gen('false');
@@ -62,8 +72,13 @@ function recognize(node) {
         case 'TrueKeyword':
             gen('true');
             break;
+        case 'NullKeyword':
+            gen('null');
+            break;
         case 'AtToken':
-            gen('@');
+            gen('let Component = o => o;');
+            gen('\n');
+            gen('let metadata = ');
             break;
         case 'PlusToken':
             gen('+');
@@ -82,12 +97,9 @@ function recognize(node) {
         case 'Block':
             gen('{');
             gen('\n');
-            depth++;
             break;
         case 'CloseBraceToken':
             gen('}');
-            gen('\n');
-            depth--;
             break;
         case 'CloseParenToken':
             gen(')');
@@ -97,6 +109,7 @@ function recognize(node) {
             break;
         case 'CloseBracketToken':
             gen(']');
+            break;
         case 'SemicolonToken':
             gen(';');
             gen('\n');
@@ -117,22 +130,32 @@ function recognize(node) {
             gen(' = ');
             break;
         case 'FirstPunctuation':
-            gen('');
+            gen(' ');
             break;
         case 'PrivateKeyword':
             gen('private');
+            gen(' ');
             break;
         case 'PublicKeyword':
             gen('public');
+            gen(' ');
+            break;
+        default:
             break;
     }
 }
 function gen(token) {
-    code.push(indent(depth) + token);
+    code.push(token);
 }
-function indent(depth) {
-    if (depth === void 0) { depth = 0; }
-    return Array(depth + 1).fill().map(function (_, i) { return ' '; });
+function transform(code) {
+    return code;
+}
+function indent() {
+    indentation = Math.max(indentation, 0);
+    var space = '';
+    //for (let i=0;i<indentation; i++) space += ' ';
+    //const space = Array(indentation).fill('++').map((_, i) => ' ').join(',');
+    return space;
 }
 commander
     .option('-f, --file [file]', 'Entry *.ts file')
@@ -143,19 +166,6 @@ function run() {
         console.log('err');
         process.exit(1);
     }
-    // const template = fs.readFileSync(commander.file);
-    // const extractImports = /import\s*({\s*(\w|,)*\s*}\s*from)?\s*('|")(@|\w|\/|\.)*("|')\s*\;?/gmi;
-    // const exractComponentMeta = /@Component\(\s*([\s{}\w:"'\-,./\[\]]*)/gmi;
-    // const extractClassBody = /export\s*?class\s*(\w)+\s*{\s*([\w\W]+)?}/gmi;
-    // const extractMethods = /(\w)+\s*\((\w)*\)\s*{[\w\s.=;+\(\)=\{\}>]*}/gmi;
-    // console.log(template.toString());
-    // let imports = template.toString().match(extractImports);
-    // let methods = template.toString().match(extractMethods);
-    // console.log(methods)
-    // fs.writeFileSync('./test/res.ts', imports.join('\n'));
-    // fs.writeFileSync('./test/res.ts', methods.join('\n'));
-    // console.log(fs.readFileSync('./test/res.ts')+'');
-    // process.exit(0);
     var program = ts.createProgram(files, {
         target: ts.ScriptTarget.ES2015,
         module: ts.ModuleKind.ES2015
@@ -163,37 +173,11 @@ function run() {
     var sourceCode = fs.readFileSync(commander.file);
     var sourceFile = ts.createSourceFile('foo.ts', sourceCode.toString(), ts.ScriptTarget.ES2015, true);
     printAllChildren(sourceFile);
+    gen('\n');
+    gen("document.registerElement(metadata.selector, " + className + ");");
     if (!printAST) {
-        console.log(code.join(''));
+        console.log(transform(code).join(''));
     }
     process.exit();
-    var sourceFiles = program.getSourceFiles() || [];
-    var __codeGen_extends = new Map();
-    var __codeGen_members = new Map();
-    sourceFiles.map(function (file) {
-        ts.forEachChild(file, function (node) {
-            var nn = (node.decorators || []).filter(function (decorator) {
-                return decorator.expression.expression.text === 'Component';
-            })
-                .map(function (n) { return node; });
-            var mm = nn.filter(function (n) { return n.members && n.members.length > 0; });
-            d(mm);
-            if (node.name && node.name.text === 'WcElement') {
-                if (node.heritageClauses) {
-                    node.heritageClauses.forEach(function (hcNode) {
-                        node.heritageClauses.forEach(function (typeNode) {
-                            typeNode.types.forEach(function (parentClass) {
-                                d(parentClass.expression.text);
-                                __codeGen_extends.set(parentClass.expression.text, parentClass);
-                            });
-                        });
-                    });
-                }
-                if (node.members) {
-                }
-                d(node);
-            }
-        });
-    });
 }
 run();
