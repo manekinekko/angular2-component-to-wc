@@ -4,24 +4,151 @@ import * as path from 'path';
 import * as util from 'util';
 import * as ts from 'typescript';
 
+let printAST = false;
 let files = [];
 let d = (node) => {
   console.log(util.inspect(node, { showHidden: true, depth: 10 }));
 };
+let code = [];
+const depth = 0;
 
 function syntaxKindToName(kind: ts.SyntaxKind) {
     return (<any>ts).SyntaxKind[kind];
 }
 function printAllChildren(node: ts.Node, depth = 0) {
-    console.log(
-      new Array(depth + 1).join('----'), 
-      syntaxKindToName(node.kind), 
-      node.text ? `[${node.text}]` : '',
-      node.name ? `[${node.name.text}]` : '',
-      node.expression ? `[${node.expression.text}]` : ''
-    );
+    
+    if (printAST && depth > 0) {
+      console.log(
+        new Array(depth + 1).join('----'), 
+        syntaxKindToName(node.kind), 
+        node.text ? `[${node.text}]` : ''
+      );
+    }
+
+    gen(recognize(node));
     depth++;
     node.getChildren().forEach(c=> printAllChildren(c, depth));
+}
+function recognize(node: ts.Node) {
+  switch(syntaxKindToName(node.kind)) {
+    
+    case 'FirstLiteralToken':
+    case 'Identifier':
+      gen(node.text);
+      break;
+    case 'StringLiteral':
+      gen('\'');
+      gen(node.text);
+      gen('\'');
+      break;
+    
+    case 'ImportKeyword':
+      gen('import');
+      gen(' ');
+      break;
+    case 'FromKeyword':
+      gen('from');
+      gen(' ');
+      break;
+    case 'ExportKeyword':
+      gen('export');
+      gen(' ');
+      break;
+
+    case 'ClassKeyword':
+      gen('class');
+      gen(' ');
+      break;
+    case 'ThisKeyword':
+      gen('this');
+      break;
+    case 'ConstructorKeyword':
+      gen('constructor');
+      break;
+    
+    case 'FalseKeyword':
+      gen('false');
+      break;
+    case 'TrueKeyword':
+      gen('true');
+      break;
+    
+    case 'AtToken':
+      gen('@');
+      break;
+    case 'PlusToken':
+      gen('+');
+      break;
+    case 'EqualsGreaterThanToken':
+      gen(' => ');
+      break;
+    
+    case 'OpenParenToken':
+      gen('(');
+      break;
+
+    case 'ImportClause':
+    case 'ObjectLiteralExpression':
+      gen('{');
+      gen(' ');
+      break;
+    case 'Block':
+      gen('{');
+      gen('\n');
+      depth++;
+      break;
+
+    case 'CloseBraceToken':
+      gen('}');
+      gen('\n');
+      depth--;
+      break;
+    case 'CloseParenToken':
+      gen(')');
+      break;
+    case 'OpenBracketToken':
+      gen('[');
+      break;
+    case 'CloseBracketToken':
+      gen(']');
+
+    case 'SemicolonToken':
+      gen(';');
+      gen('\n');
+      break;
+    case 'CommaToken':
+      gen(',');
+      gen(' ');
+      break;
+    case 'ColonToken':
+      gen(' ');
+      gen(':');
+      gen(' ');
+      break;
+    case 'DotToken':
+      gen('.');
+      break;
+    
+    case 'FirstAssignment':
+      gen(' = ');
+      break;
+    case 'FirstPunctuation':
+      gen('');
+      break;
+    
+    case 'PrivateKeyword': 
+      gen('private');
+      break;
+    case 'PublicKeyword': 
+      gen('public');
+      break;
+  }
+}
+function gen(token) {
+  code.push(indent(depth)+token);
+}
+function indent(depth=0) {
+  return Array(depth+1).fill().map((_, i) => ' ');
 }
 
 commander
@@ -63,7 +190,19 @@ function run() {
   let sourceCode = fs.readFileSync(commander.file);
   let sourceFile = ts.createSourceFile('foo.ts', sourceCode.toString(), ts.ScriptTarget.ES2015, true);
   printAllChildren(sourceFile);
+  
+  if (!printAST) {
+    console.log(code.join(''));
+  }
+
   process.exit();
+
+
+
+
+
+
+
 
   let sourceFiles = program.getSourceFiles() || [];
   let __codeGen_extends = new Map();

@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { PinterestService } from './pinterest.service';
+import { Component, EventEmitter } from '@angular/core';
+import {PinterestService} from './pinterest.service';
 
 @Component({
   selector: 'app-root',
