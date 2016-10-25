@@ -51,6 +51,7 @@ function recognize(node) {
             gen(' ');
             break;
         case 'ExportKeyword':
+            gen('\n');
             gen('export');
             gen(' ');
             break;
@@ -97,6 +98,12 @@ function recognize(node) {
         case 'Block':
             gen('{');
             gen('\n');
+            if (isConstructor) {
+                gen('super();');
+                gen('\n');
+                isConstructor = false;
+                break;
+            }
             break;
         case 'CloseBraceToken':
             gen('}');

@@ -1,13 +1,11 @@
 import { Component, EventEmitter } from '@angular/core';
 import {PinterestService} from './pinterest.service';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-
   pins = [];
   boards = [];
   isClicked = false;
@@ -15,22 +13,18 @@ export class AppComponent {
   distance = 0;
   boardname;
   session;
-
   constructor(
     private service: PinterestService
   ) {
     this.session = this.service.session;
   }
-
   setMinDistance(event) {
     this.distance = +(event.target.value);
     this.service.minDistance = this.distance;
   }
-
   setCurrentBoard(event) {
     this.boardname = event.target.value;
   }
-
   login() {
     this.service.login().subscribe( session => {
       this.session = this.service.session;

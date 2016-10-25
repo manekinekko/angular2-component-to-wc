@@ -7,7 +7,8 @@
     "start": "npm run tsc",
     "deploy": "npm run tsc && npm version patch && npm publish",
     "install": "npm run tsc",
-    "tsc": "./node_modules/.bin/tsc --newLine LF --watch"
+    "tsc": "./node_modules/.bin/tsc --newLine LF --watch",
+    "test": "node dist/index.js -f test/app.component.ts > test/gen.wc.ts && ./node_modules/.bin/tsfmt test/gen.wc.ts > test/gen.wc.fmt.ts"
   },
   "private": false,
   "bin": {
@@ -30,6 +31,7 @@
     "opener": "1.4.1",
     "q": "1.4.1",
     "svg-to-png": "2.0.1",
-    "typescript": "2.0.0"
+    "typescript": "2.0.0",
+    "typescript-formatter": "^3.1.0"
   }
 }

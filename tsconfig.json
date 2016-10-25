@@ -9,6 +9,9 @@
     "rootDir": "./src",
     "sourceMap": false,
     "noResolve": false,
+    "compilerOptions": {
+      "newLine": "LF"
+    },
     "typeRoots": [
       "../node_modules/@types"
     ],
