@@ -1,7 +1,8 @@
 import {  Component, EventEmitter}from '@angular/core';
 import {  PinterestService}from './pinterest.service';
 let Component = o => o;
-let metadata = Component({  selector : 'app-root', templateUrl : './app.component.html', styleUrls : ['./app.component.css']})export class AppComponent extends HTMLElement { pins = [];
+let metadata = Component({  selector : 'app-root', templateUrl : './app.component.html', styleUrls : ['./app.component.css']});
+export class AppComponent extends HTMLElement { pins = [];
 boards = [];
 isClicked = false;
 isSearching = false;
@@ -9,6 +10,7 @@ distance = 0;
 boardname;
 session;
 constructor(private service : PinterestService){
+super();
  this.session = this.service.session;
 }setMinDistance(event){
  this.distance = +(event.target.value);
@@ -35,5 +37,6 @@ this.service.pins(this.boardname).subscribe(pins => {
 this.isClicked = false;
 this.isSearching = true;
 });
-}}
-document.registerElement(metadata.selector, AppComponent);
+
+
+(<any>document).registerElement(metadata.selector, AppComponent);

@@ -51,3 +51,20 @@ export class AppComponent {
     });
   }
 }
+
+
+
+{
+  provide: MyPlugin,
+  useFactory: (dep1, dep2) => { 
+
+    if (IS_NODE) {
+      return new NodeHttp(dep1, dep2);
+    }
+    else if (IS_BROWSER) {
+      return new Http(dep1, dep2);
+    }
+
+  },
+  deps: [dep1, dep2]
+}

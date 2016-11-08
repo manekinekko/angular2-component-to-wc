@@ -1,0 +1,496 @@
+SourceFile[import { Component, EventEmitter } from '@angular/core';
+import {PinterestService} from './pinterest.service';
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  pins = [];
+  boards = [];
+  isClicked = false;
+  isSearching = false;
+  distance = 0;
+  boardname;
+  session;
+  constructor(
+    private service: PinterestService
+  ) {
+    this.session = this.service.session;
+  }
+  setMinDistance(event) {
+    this.distance = +(event.target.value);
+    this.service.minDistance = this.distance;
+  }
+  setCurrentBoard(event) {
+    this.boardname = event.target.value;
+  }
+  login() {
+    this.service.login().subscribe( session => {
+      this.session = this.service.session;
+    })
+  }
+  logout() {
+    this.service.logout();
+    this.session = null;
+  }
+  getBoards() {
+    this.isClicked = true;
+    this.service.boards().subscribe(boards => {
+      this.boards = boards;
+      this.isClicked = false;
+    });
+  }
+  getPins() {
+    this.isClicked = true;
+    this.isSearching = false;
+    this.service.pins(this.boardname).subscribe(pins => {
+      this.pins = pins;
+      this.isClicked = false;
+      this.isSearching = true;
+    });
+  }
+}
+]
+----SyntaxList
+--------ImportDeclaration
+------------ImportKeyword
+------------ImportClause
+----------------NamedImports
+--------------------FirstPunctuation
+--------------------SyntaxList
+------------------------ImportSpecifier
+----------------------------Identifier[Component]
+------------------------CommaToken
+------------------------ImportSpecifier
+----------------------------Identifier[EventEmitter]
+--------------------CloseBraceToken
+------------FromKeyword
+------------StringLiteral[@angular/core]
+------------SemicolonToken
+--------ImportDeclaration
+------------ImportKeyword
+------------ImportClause
+----------------NamedImports
+--------------------FirstPunctuation
+--------------------SyntaxList
+------------------------ImportSpecifier
+----------------------------Identifier[PinterestService]
+--------------------CloseBraceToken
+------------FromKeyword
+------------StringLiteral[./pinterest.service]
+------------SemicolonToken
+--------ClassDeclaration
+------------SyntaxList
+----------------Decorator
+--------------------AtToken
+--------------------CallExpression
+------------------------Identifier[Component]
+------------------------OpenParenToken
+------------------------SyntaxList
+----------------------------ObjectLiteralExpression
+--------------------------------FirstPunctuation
+--------------------------------SyntaxList
+------------------------------------PropertyAssignment
+----------------------------------------Identifier[selector]
+----------------------------------------ColonToken
+----------------------------------------StringLiteral[app-root]
+------------------------------------CommaToken
+------------------------------------PropertyAssignment
+----------------------------------------Identifier[templateUrl]
+----------------------------------------ColonToken
+----------------------------------------StringLiteral[./app.component.html]
+------------------------------------CommaToken
+------------------------------------PropertyAssignment
+----------------------------------------Identifier[styleUrls]
+----------------------------------------ColonToken
+----------------------------------------ArrayLiteralExpression
+--------------------------------------------OpenBracketToken
+--------------------------------------------SyntaxList
+------------------------------------------------StringLiteral[./app.component.css]
+--------------------------------------------CloseBracketToken
+--------------------------------CloseBraceToken
+------------------------CloseParenToken
+------------SyntaxList
+----------------ExportKeyword
+------------ClassKeyword
+------------Identifier[AppComponent]
+------------FirstPunctuation
+------------SyntaxList
+----------------PropertyDeclaration
+--------------------Identifier[pins]
+--------------------FirstAssignment
+--------------------ArrayLiteralExpression
+------------------------OpenBracketToken
+------------------------SyntaxList
+------------------------CloseBracketToken
+--------------------SemicolonToken
+----------------PropertyDeclaration
+--------------------Identifier[boards]
+--------------------FirstAssignment
+--------------------ArrayLiteralExpression
+------------------------OpenBracketToken
+------------------------SyntaxList
+------------------------CloseBracketToken
+--------------------SemicolonToken
+----------------PropertyDeclaration
+--------------------Identifier[isClicked]
+--------------------FirstAssignment
+--------------------FalseKeyword
+--------------------SemicolonToken
+----------------PropertyDeclaration
+--------------------Identifier[isSearching]
+--------------------FirstAssignment
+--------------------FalseKeyword
+--------------------SemicolonToken
+----------------PropertyDeclaration
+--------------------Identifier[distance]
+--------------------FirstAssignment
+--------------------FirstLiteralToken[0]
+--------------------SemicolonToken
+----------------PropertyDeclaration
+--------------------Identifier[boardname]
+--------------------SemicolonToken
+----------------PropertyDeclaration
+--------------------Identifier[session]
+--------------------SemicolonToken
+----------------Constructor
+--------------------ConstructorKeyword
+--------------------OpenParenToken
+--------------------SyntaxList
+------------------------Parameter
+----------------------------SyntaxList
+--------------------------------PrivateKeyword
+----------------------------Identifier[service]
+----------------------------ColonToken
+----------------------------TypeReference
+--------------------------------Identifier[PinterestService]
+--------------------CloseParenToken
+--------------------Block
+------------------------FirstPunctuation
+------------------------SyntaxList
+----------------------------ExpressionStatement
+--------------------------------BinaryExpression
+------------------------------------PropertyAccessExpression
+----------------------------------------ThisKeyword
+----------------------------------------DotToken
+----------------------------------------Identifier[session]
+------------------------------------FirstAssignment
+------------------------------------PropertyAccessExpression
+----------------------------------------PropertyAccessExpression
+--------------------------------------------ThisKeyword
+--------------------------------------------DotToken
+--------------------------------------------Identifier[service]
+----------------------------------------DotToken
+----------------------------------------Identifier[session]
+--------------------------------SemicolonToken
+------------------------CloseBraceToken
+----------------MethodDeclaration
+--------------------Identifier[setMinDistance]
+--------------------OpenParenToken
+--------------------SyntaxList
+------------------------Parameter
+----------------------------Identifier[event]
+--------------------CloseParenToken
+--------------------Block
+------------------------FirstPunctuation
+------------------------SyntaxList
+----------------------------ExpressionStatement
+--------------------------------BinaryExpression
+------------------------------------PropertyAccessExpression
+----------------------------------------ThisKeyword
+----------------------------------------DotToken
+----------------------------------------Identifier[distance]
+------------------------------------FirstAssignment
+------------------------------------PrefixUnaryExpression
+----------------------------------------PlusToken
+----------------------------------------ParenthesizedExpression
+--------------------------------------------OpenParenToken
+--------------------------------------------PropertyAccessExpression
+------------------------------------------------PropertyAccessExpression
+----------------------------------------------------Identifier[event]
+----------------------------------------------------DotToken
+----------------------------------------------------Identifier[target]
+------------------------------------------------DotToken
+------------------------------------------------Identifier[value]
+--------------------------------------------CloseParenToken
+--------------------------------SemicolonToken
+----------------------------ExpressionStatement
+--------------------------------BinaryExpression
+------------------------------------PropertyAccessExpression
+----------------------------------------PropertyAccessExpression
+--------------------------------------------ThisKeyword
+--------------------------------------------DotToken
+--------------------------------------------Identifier[service]
+----------------------------------------DotToken
+----------------------------------------Identifier[minDistance]
+------------------------------------FirstAssignment
+------------------------------------PropertyAccessExpression
+----------------------------------------ThisKeyword
+----------------------------------------DotToken
+----------------------------------------Identifier[distance]
+--------------------------------SemicolonToken
+------------------------CloseBraceToken
+----------------MethodDeclaration
+--------------------Identifier[setCurrentBoard]
+--------------------OpenParenToken
+--------------------SyntaxList
+------------------------Parameter
+----------------------------Identifier[event]
+--------------------CloseParenToken
+--------------------Block
+------------------------FirstPunctuation
+------------------------SyntaxList
+----------------------------ExpressionStatement
+--------------------------------BinaryExpression
+------------------------------------PropertyAccessExpression
+----------------------------------------ThisKeyword
+----------------------------------------DotToken
+----------------------------------------Identifier[boardname]
+------------------------------------FirstAssignment
+------------------------------------PropertyAccessExpression
+----------------------------------------PropertyAccessExpression
+--------------------------------------------Identifier[event]
+--------------------------------------------DotToken
+--------------------------------------------Identifier[target]
+----------------------------------------DotToken
+----------------------------------------Identifier[value]
+--------------------------------SemicolonToken
+------------------------CloseBraceToken
+----------------MethodDeclaration
+--------------------Identifier[login]
+--------------------OpenParenToken
+--------------------SyntaxList
+--------------------CloseParenToken
+--------------------Block
+------------------------FirstPunctuation
+------------------------SyntaxList
+----------------------------ExpressionStatement
+--------------------------------CallExpression
+------------------------------------PropertyAccessExpression
+----------------------------------------CallExpression
+--------------------------------------------PropertyAccessExpression
+------------------------------------------------PropertyAccessExpression
+----------------------------------------------------ThisKeyword
+----------------------------------------------------DotToken
+----------------------------------------------------Identifier[service]
+------------------------------------------------DotToken
+------------------------------------------------Identifier[login]
+--------------------------------------------OpenParenToken
+--------------------------------------------SyntaxList
+--------------------------------------------CloseParenToken
+----------------------------------------DotToken
+----------------------------------------Identifier[subscribe]
+------------------------------------OpenParenToken
+------------------------------------SyntaxList
+----------------------------------------ArrowFunction
+--------------------------------------------SyntaxList
+------------------------------------------------Parameter
+----------------------------------------------------Identifier[session]
+--------------------------------------------EqualsGreaterThanToken
+--------------------------------------------Block
+------------------------------------------------FirstPunctuation
+------------------------------------------------SyntaxList
+----------------------------------------------------ExpressionStatement
+--------------------------------------------------------BinaryExpression
+------------------------------------------------------------PropertyAccessExpression
+----------------------------------------------------------------ThisKeyword
+----------------------------------------------------------------DotToken
+----------------------------------------------------------------Identifier[session]
+------------------------------------------------------------FirstAssignment
+------------------------------------------------------------PropertyAccessExpression
+----------------------------------------------------------------PropertyAccessExpression
+--------------------------------------------------------------------ThisKeyword
+--------------------------------------------------------------------DotToken
+--------------------------------------------------------------------Identifier[service]
+----------------------------------------------------------------DotToken
+----------------------------------------------------------------Identifier[session]
+--------------------------------------------------------SemicolonToken
+------------------------------------------------CloseBraceToken
+------------------------------------CloseParenToken
+------------------------CloseBraceToken
+----------------MethodDeclaration
+--------------------Identifier[logout]
+--------------------OpenParenToken
+--------------------SyntaxList
+--------------------CloseParenToken
+--------------------Block
+------------------------FirstPunctuation
+------------------------SyntaxList
+----------------------------ExpressionStatement
+--------------------------------CallExpression
+------------------------------------PropertyAccessExpression
+----------------------------------------PropertyAccessExpression
+--------------------------------------------ThisKeyword
+--------------------------------------------DotToken
+--------------------------------------------Identifier[service]
+----------------------------------------DotToken
+----------------------------------------Identifier[logout]
+------------------------------------OpenParenToken
+------------------------------------SyntaxList
+------------------------------------CloseParenToken
+--------------------------------SemicolonToken
+----------------------------ExpressionStatement
+--------------------------------BinaryExpression
+------------------------------------PropertyAccessExpression
+----------------------------------------ThisKeyword
+----------------------------------------DotToken
+----------------------------------------Identifier[session]
+------------------------------------FirstAssignment
+------------------------------------NullKeyword
+--------------------------------SemicolonToken
+------------------------CloseBraceToken
+----------------MethodDeclaration
+--------------------Identifier[getBoards]
+--------------------OpenParenToken
+--------------------SyntaxList
+--------------------CloseParenToken
+--------------------Block
+------------------------FirstPunctuation
+------------------------SyntaxList
+----------------------------ExpressionStatement
+--------------------------------BinaryExpression
+------------------------------------PropertyAccessExpression
+----------------------------------------ThisKeyword
+----------------------------------------DotToken
+----------------------------------------Identifier[isClicked]
+------------------------------------FirstAssignment
+------------------------------------TrueKeyword
+--------------------------------SemicolonToken
+----------------------------ExpressionStatement
+--------------------------------CallExpression
+------------------------------------PropertyAccessExpression
+----------------------------------------CallExpression
+--------------------------------------------PropertyAccessExpression
+------------------------------------------------PropertyAccessExpression
+----------------------------------------------------ThisKeyword
+----------------------------------------------------DotToken
+----------------------------------------------------Identifier[service]
+------------------------------------------------DotToken
+------------------------------------------------Identifier[boards]
+--------------------------------------------OpenParenToken
+--------------------------------------------SyntaxList
+--------------------------------------------CloseParenToken
+----------------------------------------DotToken
+----------------------------------------Identifier[subscribe]
+------------------------------------OpenParenToken
+------------------------------------SyntaxList
+----------------------------------------ArrowFunction
+--------------------------------------------SyntaxList
+------------------------------------------------Parameter
+----------------------------------------------------Identifier[boards]
+--------------------------------------------EqualsGreaterThanToken
+--------------------------------------------Block
+------------------------------------------------FirstPunctuation
+------------------------------------------------SyntaxList
+----------------------------------------------------ExpressionStatement
+--------------------------------------------------------BinaryExpression
+------------------------------------------------------------PropertyAccessExpression
+----------------------------------------------------------------ThisKeyword
+----------------------------------------------------------------DotToken
+----------------------------------------------------------------Identifier[boards]
+------------------------------------------------------------FirstAssignment
+------------------------------------------------------------Identifier[boards]
+--------------------------------------------------------SemicolonToken
+----------------------------------------------------ExpressionStatement
+--------------------------------------------------------BinaryExpression
+------------------------------------------------------------PropertyAccessExpression
+----------------------------------------------------------------ThisKeyword
+----------------------------------------------------------------DotToken
+----------------------------------------------------------------Identifier[isClicked]
+------------------------------------------------------------FirstAssignment
+------------------------------------------------------------FalseKeyword
+--------------------------------------------------------SemicolonToken
+------------------------------------------------CloseBraceToken
+------------------------------------CloseParenToken
+--------------------------------SemicolonToken
+------------------------CloseBraceToken
+----------------MethodDeclaration
+--------------------Identifier[getPins]
+--------------------OpenParenToken
+--------------------SyntaxList
+--------------------CloseParenToken
+--------------------Block
+------------------------FirstPunctuation
+------------------------SyntaxList
+----------------------------ExpressionStatement
+--------------------------------BinaryExpression
+------------------------------------PropertyAccessExpression
+----------------------------------------ThisKeyword
+----------------------------------------DotToken
+----------------------------------------Identifier[isClicked]
+------------------------------------FirstAssignment
+------------------------------------TrueKeyword
+--------------------------------SemicolonToken
+----------------------------ExpressionStatement
+--------------------------------BinaryExpression
+------------------------------------PropertyAccessExpression
+----------------------------------------ThisKeyword
+----------------------------------------DotToken
+----------------------------------------Identifier[isSearching]
+------------------------------------FirstAssignment
+------------------------------------FalseKeyword
+--------------------------------SemicolonToken
+----------------------------ExpressionStatement
+--------------------------------CallExpression
+------------------------------------PropertyAccessExpression
+----------------------------------------CallExpression
+--------------------------------------------PropertyAccessExpression
+------------------------------------------------PropertyAccessExpression
+----------------------------------------------------ThisKeyword
+----------------------------------------------------DotToken
+----------------------------------------------------Identifier[service]
+------------------------------------------------DotToken
+------------------------------------------------Identifier[pins]
+--------------------------------------------OpenParenToken
+--------------------------------------------SyntaxList
+------------------------------------------------PropertyAccessExpression
+----------------------------------------------------ThisKeyword
+----------------------------------------------------DotToken
+----------------------------------------------------Identifier[boardname]
+--------------------------------------------CloseParenToken
+----------------------------------------DotToken
+----------------------------------------Identifier[subscribe]
+------------------------------------OpenParenToken
+------------------------------------SyntaxList
+----------------------------------------ArrowFunction
+--------------------------------------------SyntaxList
+------------------------------------------------Parameter
+----------------------------------------------------Identifier[pins]
+--------------------------------------------EqualsGreaterThanToken
+--------------------------------------------Block
+------------------------------------------------FirstPunctuation
+------------------------------------------------SyntaxList
+----------------------------------------------------ExpressionStatement
+--------------------------------------------------------BinaryExpression
+------------------------------------------------------------PropertyAccessExpression
+----------------------------------------------------------------ThisKeyword
+----------------------------------------------------------------DotToken
+----------------------------------------------------------------Identifier[pins]
+------------------------------------------------------------FirstAssignment
+------------------------------------------------------------Identifier[pins]
+--------------------------------------------------------SemicolonToken
+----------------------------------------------------ExpressionStatement
+--------------------------------------------------------BinaryExpression
+------------------------------------------------------------PropertyAccessExpression
+----------------------------------------------------------------ThisKeyword
+----------------------------------------------------------------DotToken
+----------------------------------------------------------------Identifier[isClicked]
+------------------------------------------------------------FirstAssignment
+------------------------------------------------------------FalseKeyword
+--------------------------------------------------------SemicolonToken
+----------------------------------------------------ExpressionStatement
+--------------------------------------------------------BinaryExpression
+------------------------------------------------------------PropertyAccessExpression
+----------------------------------------------------------------ThisKeyword
+----------------------------------------------------------------DotToken
+----------------------------------------------------------------Identifier[isSearching]
+------------------------------------------------------------FirstAssignment
+------------------------------------------------------------TrueKeyword
+--------------------------------------------------------SemicolonToken
+------------------------------------------------CloseBraceToken
+------------------------------------CloseParenToken
+--------------------------------SemicolonToken
+------------------------CloseBraceToken
+------------CloseBraceToken
+----EndOfFileToken
